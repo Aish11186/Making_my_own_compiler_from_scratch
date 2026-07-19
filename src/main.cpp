@@ -7,10 +7,11 @@ using namespace std;
 #include <string>
 #include <cctype>
 #include <cstdlib>
+//#include "./tokenization.hpp"
 
 
 enum class TokenType{
-    _return,
+    exit,
     int_lit,
     semi
 
@@ -33,12 +34,12 @@ vector<Token> tokenize(const string& str){
                 i++;
             }
             i--;
-            if(buff == "return"){
-                tokens.push_back({.type =TokenType::_return});
+            if(buff == "exit"){
+                tokens.push_back({.type =TokenType::exit});
                 buff.clear();
             }
             else{ 
-                cerr<<"you messed up";
+                cerr<<"faaaaaaaaaa you messed up (but its okay mistakes are how we grow)";
                 exit(EXIT_FAILURE);
             }
         
@@ -63,6 +64,7 @@ vector<Token> tokenize(const string& str){
         }
         else{
             cerr<<"you messed up";
+            
             exit(EXIT_FAILURE);
         }
     }
@@ -79,7 +81,7 @@ string tokens_to_asm(const vector<Token>& tokens) {
     for (int i = 0; i < tokens.size(); i++) {
         const Token& token = tokens.at(i);
 
-        if (token.type == TokenType::_return) {
+        if (token.type == TokenType::exit) {
             if (i + 2 < tokens.size() &&
                 tokens.at(i + 1).type == TokenType::int_lit &&
                 tokens.at(i + 2).type == TokenType::semi) {
