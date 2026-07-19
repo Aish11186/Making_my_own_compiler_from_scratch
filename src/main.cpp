@@ -118,6 +118,12 @@ int main(int argc, char* argv[]){
         cout << " " << token.value.value();
     }
     cout<<tokens_to_asm(tokens)<<endl;
+    {
+        fstream file("out.asm", ios::out); //outputting to assembly
+        file<<tokens_to_asm(tokens);
+    }
+    system("nasm -felf64 out.asm ");
+    system("ld -o out out.o");
     
     return 0;
 
