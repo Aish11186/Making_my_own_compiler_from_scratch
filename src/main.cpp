@@ -7,70 +7,10 @@ using namespace std;
 #include <string>
 #include <cctype>
 #include <cstdlib>
-//#include "./tokenization.hpp"
+#include "./tokenization.hpp"
 
 
-enum class TokenType{
-    exit,
-    int_lit,
-    semi
 
-};
-struct Token{
-    TokenType type;
-    std::optional<std::string> value;
-};
-
-vector<Token> tokenize(const string& str){
-    vector<Token> tokens{};
-    string buff{};
-    for(int i=0; i<str.size(); i++){
-        char c=str.at(i);
-        if(isalpha(c)){
-            buff.push_back(c);
-            i++;
-            while(i<str.size()&&isalnum(str.at(i))){
-                buff.push_back(str.at(i));
-                i++;
-            }
-            i--;
-            if(buff == "exit"){
-                tokens.push_back({.type =TokenType::exit});
-                buff.clear();
-            }
-            else{ 
-                cerr<<"faaaaaaaaaa you messed up (but its okay mistakes are how we grow)";
-                exit(EXIT_FAILURE);
-            }
-        
-
-        }
-        else if (isdigit(c)){
-            buff.push_back(c);
-            i++;
-            while(i<str.size()&&isdigit(str.at(i))){
-                buff.push_back(str.at(i));
-                i++;
-            }
-            i--;
-            tokens.push_back({.type = TokenType::int_lit, .value = string(buff.begin(), buff.end())});
-            buff.clear();
-        }
-        else if(c==';'){
-            tokens.push_back({.type = TokenType::semi});
-        }
-        else if(isspace(c)){
-            continue;
-        }
-        else{
-            cerr<<"you messed up";
-            
-            exit(EXIT_FAILURE);
-        }
-    }
-    return tokens;
-
-}
 
 string tokens_to_asm(const vector<Token>& tokens) {
     stringstream output;
@@ -112,7 +52,8 @@ int main(int argc, char* argv[]){
     }
 
     //cout<<contents<<endl;
-    auto tokens = tokenize(contents);
+    tokenizer tokenizer(contents);
+    vector<Token> tokens = tokenizer.tokenize();
     for (const auto& token : tokens) {
     cout << static_cast<int>(token.type);
 
